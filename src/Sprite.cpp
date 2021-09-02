@@ -1,7 +1,7 @@
-#include <SDL2/SDL_image.h>
-#include "../include/sprite.hpp"
-#include "../include/game.hpp"
 #include <iostream>
+#include <SDL2/SDL_image.h>
+#include "../include/Sprite.h"
+#include "../include/Game.h"
 
 using std::cout;
 using std::endl;

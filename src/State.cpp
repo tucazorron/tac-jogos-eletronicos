@@ -1,6 +1,6 @@
-#include "../include/state.hpp"
-#include "SDL2/SDL.h"
 #include <iostream>
+#include "../include/State.h"
+#include "SDL2/SDL.h"
 
 using std::cout;
 

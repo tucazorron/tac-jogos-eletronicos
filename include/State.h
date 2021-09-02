@@ -1,7 +1,7 @@
 #ifndef _STATE_H_
 #define _STATE_H_
 
-#include "sprite.hpp"
+#include "Sprite.h"
 
 class State
 {

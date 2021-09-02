@@ -16,7 +16,7 @@
 #endif // INCLUDE_SDL
 
 #include <string>
-#include "state.hpp"
+#include "State.h"
 using std::string;
 
 class Game

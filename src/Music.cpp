@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/music.hpp"
+#include "../include/Music.h"
 
 using std::cout;
 using std::endl;
