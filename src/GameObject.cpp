@@ -12,6 +12,7 @@ GameObject::GameObject()
 GameObject::~GameObject()
 {
     unsigned int sizevector = components.size();
+    
     for (unsigned int i = sizevector; i < 0; i--)
     {
         components.erase(components.begin() + i);
