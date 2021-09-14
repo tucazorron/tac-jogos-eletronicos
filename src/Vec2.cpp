@@ -33,4 +33,6 @@ Vec2 Vec2::GetRotated(float angle)
     Vec2 aux;
     aux.x = (x * cos(angle)) - (y * sin(angle));
     aux.y = (y * cos(angle)) + (x * sin(angle));
+
+    return aux;
 }
