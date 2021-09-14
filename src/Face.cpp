@@ -15,20 +15,20 @@ Face::Face(GameObject &associated) : Component(associated)
 
 void Face::Damage(int damage)
 {
-    cout << "Giving damage." << endl;
     hitpoints = hitpoints - damage;
     if (hitpoints < 0)
     {
         Sound *sound = reinterpret_cast<Sound *>(associated.GetComponent("Sound"));
         if (sound != nullptr)
         {
-            cout << "* gun sound *" << endl;
             sound->Play();
         }
         associated.RequestDelete();
     }
 }
+
 void Face::Update(float dt) {}
+
 void Face::Render() {}
 
 bool Face::Is(string type)
