@@ -21,22 +21,22 @@ using std::string;
 
 class Game
 {
-private:
-    string title;
-    int width;
-    int height;
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-    Game(string mytitle, int mywidth, int myheight);
-    static Game *instance;
-    State *state;
-
 public:
     ~Game();
     static Game &GetInstance();
     State &GetState();
     SDL_Renderer *GetRenderer();
     void Run();
+
+private:
+    Game(string mytitle, int mywidth, int myheight);
+    string title;
+    int width;
+    int height;
+    SDL_Window *window;
+    SDL_Renderer *renderer;
+    static Game *instance;
+    State *state;
 };
 
 #endif
