@@ -18,12 +18,7 @@ void Sound::Play(int times)
 {
     if (chunk != nullptr)
     {
-        cout << "Play music." << endl;
         channel = Mix_PlayChannel(channel, chunk, times);
-    }
-    else
-    {
-        cout << "Chunk is a null pointer." << endl;
     }
 }
 
