@@ -8,6 +8,7 @@ Music::Music()
 {
     music = nullptr;
 }
+
 Music::Music(string file)
 {
     music = nullptr;
@@ -29,26 +30,19 @@ void Music::Stop(int msToStop)
 
 void Music::Open(string file)
 {
-    if (music == nullptr)
+    if (music != nullptr)
     {
-        cout << "Erro ao carregar musica: " << SDL_GetError() << endl;
+        Mix_LoadMUS(file.c_str());
     }
     else
     {
-        Mix_LoadMUS(file.c_str());
+        cout << "Music loading error: " << SDL_GetError() << endl;
     }
 }
 
 bool Music::IsOpen()
 {
-    if (music != nullptr)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return music != nullptr;
 }
 
 Music::~Music()
