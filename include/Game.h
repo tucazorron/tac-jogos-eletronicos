@@ -23,19 +23,30 @@ class Game
 {
 public:
     ~Game();
+    
     static Game &GetInstance();
+    
     State &GetState();
+    
     SDL_Renderer *GetRenderer();
+    
     void Run();
 
 private:
     Game(string mytitle, int mywidth, int myheight);
+    
     string title;
+    
     int width;
+    
     int height;
+    
     SDL_Window *window;
+    
     SDL_Renderer *renderer;
+    
     static Game *instance;
+    
     State *state;
 };
 
