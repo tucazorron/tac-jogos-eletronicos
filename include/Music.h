@@ -4,11 +4,11 @@
 #include <string>
 #include <SDL2/SDL.h>
 #include "SDL2/SDL_mixer.h"
+
 using std::string;
 
 class Music
 {
-
 public:
     Music();
     Music(string file);
