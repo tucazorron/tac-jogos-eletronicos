@@ -12,17 +12,26 @@ class State
 {
 public:
     State();
+    
     ~State();
+    
     bool QuitRequested();
+    
     void LoadAssets();
-    void Update();
+    
+    void Update(float dt);
+    
     void Render();
 
 private:
     void Input();
+    
     void AddObject(int mousex, int mouseY);
+    
     vector<std::unique_ptr<GameObject>> objectArray;
-    Sprite bg;
+    
+    Sprite *bg;
+    
     bool quitRequested;
 };
 
