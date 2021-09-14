@@ -15,8 +15,12 @@ Sprite::Sprite(string file) : texture(IMG_LoadTexture(
                                   Game::GetInstance().GetRenderer(),
                                   file.c_str()))
 {
-
+    texture = nullptr;
     Open(file);
+    if (IsOpen())
+    {
+        cout << "Open texture." << endl;
+    }
 }
 
 Sprite::~Sprite()
@@ -29,10 +33,20 @@ Sprite::~Sprite()
 
 void Sprite::Open(string file)
 {
+    SDL_Renderer *renderer = Game::GetInstance().GetRenderer();
+
+    if (texture != nullptr)
+    {
+        SDL_DestroyTexture(texture);
+    }
+
+    texture = IMG_LoadTexture(renderer, file.c_str());
+    SDL_Surface *surface = IMG_Load(file.c_str());
+    texture = SDL_CreateTextureFromSurface(renderer, surface);
 
     if (texture == nullptr)
     {
-        cout << "Error while creating image: " << SDL_GetError() << endl;
+        cout << "Creating image error: " << SDL_GetError() << endl;
         exit(EXIT_FAILURE);
     }
     else
@@ -43,7 +57,7 @@ void Sprite::Open(string file)
         }
         else
         {
-            cout << "Error on QueryTexture: " << SDL_GetError() << endl;
+            cout << "Query texture error: " << SDL_GetError() << endl;
         };
     }
 }
@@ -60,10 +74,12 @@ int Sprite::GetWidth()
 {
     return clipRect.w;
 }
+
 int Sprite::GetHeight()
 {
     return clipRect.h;
 }
+
 void Sprite::Render(int x, int y)
 {
 
@@ -79,19 +95,19 @@ void Sprite::Render(int x, int y)
     {
         if (SDL_RenderCopy(renderer, texture, &clipRect, &dst) != 0)
         {
-            cout << "Error while rendering copy: " << SDL_GetError() << endl;
+            cout << "Rendering copy error: " << SDL_GetError() << endl;
         }
     }
 }
 
 bool Sprite::IsOpen()
 {
-    if (texture != nullptr)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    };
+    return texture != nullptr;
+}
+
+void Sprite::Update(float dt) {}
+
+bool Sprite::Is(string type)
+{
+    return type == "Sprite";
 }
