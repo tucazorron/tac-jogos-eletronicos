@@ -20,21 +20,21 @@ public:
 
     ~GameObject();
 
-    void Update(float dt);
-
-    void Render();
-
-    bool IsDead();
-
-    void RequestDelete();
-
     void AddComponent(Component *cpt);
 
-    void RemoveComponent(Component *cpt);
+    Rect box;
 
     Component *GetComponent(string type);
 
-    Rect box;
+    bool IsDead();
+
+    void RemoveComponent(Component *cpt);
+
+    void Render();
+
+    void RequestDelete();
+
+    void Update(float dt);
 
 private:
     vector<std::unique_ptr<Component>> components;

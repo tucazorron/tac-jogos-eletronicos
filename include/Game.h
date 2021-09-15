@@ -13,41 +13,40 @@
 #error "Unknown compiler"
 #endif
 #undef INCLUDE_SDL
-#endif // INCLUDE_SDL
+#endif
 
 #include <string>
 #include "State.h"
+
 using std::string;
 
 class Game
 {
 public:
     ~Game();
-    
+
     static Game &GetInstance();
-    
-    State &GetState();
-    
+
     SDL_Renderer *GetRenderer();
-    
+
+    State &GetState();
+
     void Run();
 
 private:
     Game(string mytitle, int mywidth, int myheight);
-    
-    string title;
-    
-    int width;
-    
-    int height;
-    
-    SDL_Window *window;
-    
-    SDL_Renderer *renderer;
-    
+
+    int width, height;
+
     static Game *instance;
-    
+
+    SDL_Renderer *renderer;
+
     State *state;
+
+    string title;
+
+    SDL_Window *window;
 };
 
 #endif

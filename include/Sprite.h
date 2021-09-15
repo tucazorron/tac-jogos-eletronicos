@@ -8,7 +8,7 @@
 
 using std::string;
 
-class Sprite
+class Sprite : public Component
 {
 public:
     Sprite(GameObject &associated);
@@ -17,30 +17,28 @@ public:
 
     ~Sprite();
 
-    void Open(string file);
-
-    bool IsOpen();
-
-    void SetClip(int x, int y, int w, int h);
-
-    void Render(int x, int y);
+    int GetHeight();
 
     int GetWidth();
 
-    int GetHeight();
+    bool Is(string type);
+
+    bool IsOpen();
+
+    void Open(string file);
+
+    void Render();
+
+    void SetClip(int x, int y, int w, int h);
 
     void Update(float dt);
 
-    bool Is(string type);
-
 private:
-    SDL_Texture *texture;
+    int width, height;
 
     SDL_Rect clipRect;
 
-    int width;
-
-    int height;
+    SDL_Texture *texture;
 };
 
 #endif

@@ -8,14 +8,14 @@ class Face : public Component
 {
 public:
     Face(GameObject &associated);
-    
+
     void Damage(int damage);
-    
-    void Update(float dt);
-    
-    void Render();
-    
+
     bool Is(string type);
+
+    void Render();
+
+    void Update(float dt);
 
 private:
     int hitpoints;

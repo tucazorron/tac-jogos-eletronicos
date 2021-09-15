@@ -16,24 +16,24 @@ public:
     
     ~Sound();
     
-    void Play(int times = 1);
-    
-    void Stop();
+    bool Is(string type);
+
+    bool IsOpen();
     
     void Open(string file);
     
-    bool IsOpen();
-    
-    void Update(float dt);
+    void Play(int times = 1);
     
     void Render();
     
-    bool Is(string type);
-
-private:
-    Mix_Chunk *chunk;
+    void Stop();
     
+    void Update(float dt);
+    
+private:
     int channel;
+    
+    Mix_Chunk *chunk;
 };
 
 #endif

@@ -3,35 +3,36 @@
 
 #include <string>
 #include <vector>
-#include "Sprite.h"
 #include "Face.h"
+#include "Sprite.h"
 
 using std::string;
+using std::unique_ptr;
 
 class State
 {
 public:
     State();
-    
+
     ~State();
-    
-    bool QuitRequested();
-    
+
     void LoadAssets();
-    
-    void Update(float dt);
-    
+
+    bool QuitRequested();
+
     void Render();
 
+    void Update(float dt);
+
 private:
-    void Input();
-    
     void AddObject(int mousex, int mouseY);
-    
-    vector<std::unique_ptr<GameObject>> objectArray;
-    
+
+    void Input();
+
     Sprite *bg;
-    
+
+    vector<unique_ptr<GameObject>> objectArray;
+
     bool quitRequested;
 };
 

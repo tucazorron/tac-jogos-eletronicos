@@ -16,13 +16,13 @@ public:
 
     ~Music();
 
-    void Play(int times = -1);
-
-    void Stop(int msToStop = 1500);
+    bool IsOpen();
 
     void Open(string file);
 
-    bool IsOpen();
+    void Play(int times = -1);
+
+    void Stop(int msToStop = 1500);
 
 private:
     Mix_Music *music;
