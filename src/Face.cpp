@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-
 #include "SDL2/SDL.h"
 #include "../include/Face.h"
 #include "../include/Sound.h"
@@ -27,11 +26,11 @@ void Face::Damage(int damage)
     }
 }
 
-void Face::Update(float dt) {}
-
-void Face::Render() {}
-
 bool Face::Is(string type)
 {
     return type == "Face";
 }
+
+void Face::Render() {}
+
+void Face::Update(float dt) {}

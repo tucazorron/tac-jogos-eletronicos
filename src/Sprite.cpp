@@ -6,14 +6,12 @@
 using std::cout;
 using std::endl;
 
-Sprite::Sprite()
+Sprite::Sprite(GameObject &associated) : Component(associated)
 {
     texture = nullptr;
 }
 
-Sprite::Sprite(string file) : texture(IMG_LoadTexture(
-                                  Game::GetInstance().GetRenderer(),
-                                  file.c_str()))
+Sprite::Sprite(GameObject &associated, string file) : Component(associated)
 {
     texture = nullptr;
     Open(file);
@@ -80,14 +78,14 @@ int Sprite::GetHeight()
     return clipRect.h;
 }
 
-void Sprite::Render(int x, int y)
+void Sprite::Render()
 {
 
     SDL_Renderer *renderer = Game::GetInstance().GetRenderer();
 
     SDL_Rect dst;
-    dst.x = x;
-    dst.y = y;
+    dst.x = associated.box.x;
+    dst.y = associated.box.y;
     dst.w = clipRect.w;
     dst.h = clipRect.h;
 

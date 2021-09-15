@@ -3,6 +3,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_mixer.h>
+#include "../include/Game.h"
 
 using std::cout;
 using std::endl;
@@ -34,8 +35,6 @@ using std::endl;
 #endif
 #undef INCLUDE_SDL_MIXER
 #endif
-
-#include "../include/Game.h"
 
 Game *Game::instance;
 

@@ -11,9 +11,9 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-    unsigned int sizevector = components.size();
+    unsigned int sizeVector = components.size();
     
-    for (unsigned int i = sizevector; i < 0; i--)
+    for (unsigned int i = sizeVector; i < 0; i--)
     {
         components.erase(components.begin() + i);
     }
@@ -22,9 +22,9 @@ GameObject::~GameObject()
 
 void GameObject::Update(float dt)
 {
-    unsigned int sizevector = components.size();
+    unsigned int sizeVector = components.size();
 
-    for (unsigned int i = 0; i < sizevector; i++)
+    for (unsigned int i = 0; i < sizeVector; i++)
     {
         components[i]->Update(0);
     }
@@ -32,9 +32,9 @@ void GameObject::Update(float dt)
 
 void GameObject::Render()
 {
-    unsigned int sizevector = components.size();
+    unsigned int sizeVector = components.size();
 
-    for (unsigned int i = 0; i < sizevector; i++)
+    for (unsigned int i = 0; i < sizeVector; i++)
     {
         components[i]->Render();
     }
@@ -57,10 +57,10 @@ void GameObject::AddComponent(Component *cpt)
 
 void GameObject::RemoveComponent(Component *cpt)
 {
-    unsigned int sizevector = components.size();
+    unsigned int sizeVector = components.size();
     bool found = false;
 
-    for (unsigned int i = 0; i < sizevector; i++)
+    for (unsigned int i = 0; i < sizeVector; i++)
     {
         if (components[i].get() == cpt)
         {
@@ -76,9 +76,9 @@ void GameObject::RemoveComponent(Component *cpt)
 
 Component *GameObject::GetComponent(string type)
 {
-    unsigned int sizevector = components.size();
+    unsigned int sizeVector = components.size();
 
-    for (unsigned int i = 0; i < sizevector; i++)
+    for (unsigned int i = 0; i < sizeVector; i++)
     {
         if (components[i].get()->Is(type))
         {
