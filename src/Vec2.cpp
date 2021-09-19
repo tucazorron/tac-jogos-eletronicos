@@ -1,38 +1,44 @@
 #include <cmath>
 #include "../include/Vec2.h"
 
+Vec2::Vec2(float xvalue, float yvalue)
+{
+    x = xvalue;
+    y = yvalue;
+}
+
 Vec2 Vec2::operator+(Vec2 b)
 {
-    Vec2 aux;
-    aux.x = ((this->x) + (b.x));
-    aux.y = ((this->y) + (b.y));
+    Vec2 position;
+    position.x = x + b.x;
+    position.y = y + b.y;
 
-    return aux;
+    return position;
 }
 
 Vec2 Vec2::operator-(Vec2 b)
 {
-    Vec2 aux;
-    aux.x = ((this->x) - (b.x));
-    aux.y = ((this->y) - (b.y));
+    Vec2 position;
+    position.x = x - b.x;
+    position.y = y - b.y;
 
-    return aux;
+    return position;
 }
 
 Vec2 Vec2::MultEscalar(Vec2 a, float escalar)
 {
-    Vec2 aux;
-    aux.x = ((a.x) * (escalar));
-    aux.y = ((a.y) * (escalar));
+    Vec2 position;
+    position.x = a.x * escalar;
+    position.y = a.y * escalar;
 
-    return aux;
+    return position;
 }
 
 Vec2 Vec2::GetRotated(float angle)
 {
-    Vec2 aux;
-    aux.x = (x * cos(angle)) - (y * sin(angle));
-    aux.y = (y * cos(angle)) + (x * sin(angle));
+    Vec2 position;
+    position.x = x * cos(angle) - y * sin(angle);
+    position.y = y * cos(angle) + x * sin(angle);
 
-    return aux;
+    return position;
 }

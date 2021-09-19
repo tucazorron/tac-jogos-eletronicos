@@ -14,10 +14,10 @@ Face::Face(GameObject &associated) : Component(associated)
 
 void Face::Damage(int damage)
 {
-    hitpoints = hitpoints - damage;
-    if (hitpoints < 0)
+    hitpoints -= damage;
+    if (hitpoints <= 0)
     {
-        Sound *sound = reinterpret_cast<Sound *>(associated.GetComponent("Sound"));
+        Sound *sound = (Sound *)(associated.GetComponent("Sound"));
         if (sound != nullptr)
         {
             sound->Play();

@@ -1,7 +1,8 @@
 #include <iostream>
 #include <SDL2/SDL_image.h>
-#include "../include/Sprite.h"
 #include "../include/Game.h"
+#include "../include/GameObject.h"
+#include "../include/Sprite.h"
 
 using std::cout;
 using std::endl;
@@ -15,10 +16,6 @@ Sprite::Sprite(GameObject &associated, string file) : Component(associated)
 {
     texture = nullptr;
     Open(file);
-    if (IsOpen())
-    {
-        cout << "Open texture." << endl;
-    }
 }
 
 Sprite::~Sprite()
@@ -70,12 +67,12 @@ void Sprite::SetClip(int x, int y, int w, int h)
 
 int Sprite::GetWidth()
 {
-    return clipRect.w;
+    return width;
 }
 
 int Sprite::GetHeight()
 {
-    return clipRect.h;
+    return height;
 }
 
 void Sprite::Render()
@@ -88,14 +85,7 @@ void Sprite::Render()
     dst.y = associated.box.y;
     dst.w = clipRect.w;
     dst.h = clipRect.h;
-
-    if (texture != nullptr)
-    {
-        if (SDL_RenderCopy(renderer, texture, &clipRect, &dst) != 0)
-        {
-            cout << "Rendering copy error: " << SDL_GetError() << endl;
-        }
-    }
+    SDL_RenderCopy(renderer, texture, &clipRect, &dst);
 }
 
 bool Sprite::IsOpen()

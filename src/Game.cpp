@@ -42,7 +42,7 @@ Game &Game::GetInstance()
 {
     if (instance == nullptr)
     {
-        instance = new Game("The Game", 1024, 600);
+        instance = new Game(GAME_NAME, GAME_WIDTH, GAME_HEIGHT);
     }
     return *instance;
 }
@@ -58,18 +58,19 @@ Game::Game(string title, int width, int height)
         exit(EXIT_FAILURE);
     }
 
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER))
     {
         cout << "Error while initializing SDL: " << SDL_GetError() << endl;
+        exit(EXIT_FAILURE);
     }
     else
     {
         cout << "SDL Successfull!" << endl
              << "Initializing..." << endl;
 
-        if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF) == 0)
+        if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF))
         {
-            cout << "Error while rendering image." << endl;
+            cout << "Error while rendering image." << SDL_GetError() << endl;
         };
         Mix_Init(MIX_INIT_MP3);
         Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);
@@ -99,11 +100,11 @@ Game::Game(string title, int width, int height)
 }
 Game::~Game()
 {
+    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     Mix_CloseAudio();
     Mix_Quit();
     IMG_Quit();
-    SDL_DestroyRenderer(renderer);
     SDL_Quit();
 }
 

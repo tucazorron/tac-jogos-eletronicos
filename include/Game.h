@@ -18,6 +18,10 @@
 #include <string>
 #include "State.h"
 
+#define GAME_NAME "Artur Zorron - 180013696"
+#define GAME_WIDTH 1024
+#define GAME_HEIGHT 600
+
 using std::string;
 
 class Game

@@ -1,4 +1,5 @@
 #include <iostream>
+#include "../include/GameObject.h"
 #include "../include/Sound.h"
 
 using std::cout;
@@ -16,10 +17,7 @@ Sound::Sound(GameObject &associated, string file) : Component(associated)
 
 void Sound::Play(int times)
 {
-    if (chunk != nullptr)
-    {
-        channel = Mix_PlayChannel(channel, chunk, times);
-    }
+    channel = Mix_PlayChannel(-1, chunk, times);
 }
 
 void Sound::Stop()
@@ -41,7 +39,7 @@ void Sound::Open(string file)
 
     if (!IsOpen())
     {
-        cout << "Chunk error: " << SDL_GetError() << endl;
+        cout << "Sound loading error: " << SDL_GetError() << endl;
     }
 }
 

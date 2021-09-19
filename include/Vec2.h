@@ -10,11 +10,7 @@ class Vec2
 public:
     float x, y;
 
-    Vec2(float xvalue = 0, float yvalue = 0)
-    {
-        x = xvalue;
-        y = yvalue;
-    };
+    Vec2(float xvalue = 0, float yvalue = 0);
 
     Vec2 GetRotated(float angle);
 

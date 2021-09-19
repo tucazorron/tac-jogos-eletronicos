@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "Face.h"
+#include "Music.h"
 #include "Sprite.h"
 
 using std::string;
@@ -30,6 +31,8 @@ private:
     void Input();
 
     Sprite *bg;
+
+    Music music;
 
     vector<unique_ptr<GameObject>> objectArray;
 

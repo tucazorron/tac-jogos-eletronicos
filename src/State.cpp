@@ -11,16 +11,18 @@ using std::endl;
 State::State()
 {
     quitRequested = false;
+    LoadAssets();
+    music.Play();
 
     GameObject *GO = new GameObject();
     GO->box.x = 0;
     GO->box.y = 0;
-
-    bg = new Sprite(*GO, "assets/img/ocean.jpg");
     GO->box.w = bg->GetWidth();
     GO->box.h = bg->GetHeight();
     GO->AddComponent(bg);
     objectArray.emplace_back(GO);
+
+    bg = new Sprite(*GO, "assets/img/ocean.jpg");
 }
 
 State::~State()
@@ -47,14 +49,12 @@ void State::Input()
         {
             for (int i = objectArray.size() - 1; i >= 0; i--)
             {
-                GameObject *GO = (GameObject *)objectArray[i].get();
+                GameObject *object = (GameObject *)objectArray[i].get();
 
-                if (GO->box.Contains((float)mouseX, (float)mouseY))
+                if (object->box.Contains((float)mouseX, (float)mouseY))
                 {
-                    cout << "Contained." << endl;
-
-                    Face *face = (Face *)GO->GetComponent("Face");
-                    if (nullptr != face)
+                    Face *face = (Face *)object->GetComponent("Face");
+                    if (face != nullptr)
                     {
                         face->Damage(std::rand() % 10 + 10);
                         break;
@@ -70,32 +70,39 @@ void State::Input()
             }
             else
             {
-                Vec2 objPos = Vec2(200, 0).GetRotated((-PI + PI * (rand() % 1001) / 500.0)) + Vec2(mouseX, mouseY);
-                AddObject((int)objPos.x, (int)objPos.y);
+                Vec2 position = Vec2(200, 0).GetRotated((-PI + PI * (rand() % 1001) / 500.0)) + Vec2(mouseX, mouseY);
+                AddObject((int)position.x, (int)position.y);
             }
         }
     }
 }
 
-void State::LoadAssets() {}
+void State::LoadAssets()
+{
+    GameObject *object = new GameObject();
+    object->box.x = 0;
+    object->box.y = 0;
+    object->box.w = bg->GetWidth();
+    object->box.h = bg->GetHeight();
+
+    bg = new Sprite(*object, "assets/img/ocean.jpg");
+    object->AddComponent(bg);
+
+    objectArray.emplace_back(object);
+
+    music = *new Music("assets/audio/stageState.ogg");
+}
 
 void State::Update(float dt)
 {
     Input();
 
-    unsigned int aux = objectArray.size();
-
-    for (unsigned int i = 0; i < aux; i++)
+    for (unsigned int i = 0; i < objectArray.size(); i++)
     {
-        objectArray[i]->Update(0);
-    }
-
-    for (int unsigned i = 0; i < objectArray.size(); i++)
-    {
+        objectArray[i]->Update(dt);
         if (objectArray[i]->IsDead())
         {
             objectArray.erase(objectArray.begin() + i);
-            i--;
         }
     }
 }
@@ -107,9 +114,7 @@ bool State::QuitRequested()
 
 void State::Render()
 {
-    unsigned int aux = objectArray.size();
-
-    for (unsigned int i = 0; i < aux; i++)
+    for (unsigned int i = 0; i < objectArray.size(); i++)
     {
         objectArray[i]->Render();
     }
@@ -117,19 +122,21 @@ void State::Render()
 
 void State::AddObject(int mouseX, int mouseY)
 {
-    cout << "Adding object" << endl;
-    GameObject *firstEnemy = new GameObject();
-    firstEnemy->box.x = mouseX;
-    firstEnemy->box.y = mouseY;
+    GameObject *object = new GameObject();
+    object->box.x = mouseX;
+    object->box.y = mouseY;
 
-    Sprite *penguin = new Sprite(*firstEnemy, "assets/img/penguinface.png");
-    firstEnemy->box.w = penguin->GetWidth();
-    firstEnemy->box.h = penguin->GetHeight();
-    firstEnemy->AddComponent(penguin);
-    Sound *dieSound = new Sound(*firstEnemy, "assets/audio/boom.wav");
-    firstEnemy->AddComponent(dieSound);
-    Face *penguinFace = new Face(*firstEnemy);
-    firstEnemy->AddComponent(penguinFace);
+    Sprite *penguin = new Sprite(*object, "assets/img/penguinface.png");
+    object->AddComponent(penguin);
 
-    objectArray.emplace_back(firstEnemy);
+    object->box.w = penguin->GetWidth();
+    object->box.h = penguin->GetHeight();
+
+    Sound *sound = new Sound(*object, "assets/audio/boom.wav");
+    object->AddComponent(sound);
+
+    Face *penguinFace = new Face(*object);
+    object->AddComponent(penguinFace);
+
+    objectArray.emplace_back(object);
 }
