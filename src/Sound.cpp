@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../include/GameObject.h"
 #include "../include/Sound.h"
+#include "../include/Resources.h"
 
 using std::cout;
 using std::endl;
@@ -17,7 +18,15 @@ Sound::Sound(GameObject &associated, string file) : Component(associated)
 
 void Sound::Play(int times)
 {
-    channel = Mix_PlayChannel(-1, chunk, times);
+    if (chunk != nullptr)
+    {
+        channel = Mix_PlayChannel(-1, chunk, times);
+        if (channel == -1)
+        {
+            cout << "Error playing channel: " << Mix_GetError() << endl;
+        }
+        Mix_Volume(channel, MIX_MAX_VOLUME);
+    }
 }
 
 void Sound::Stop()
@@ -35,7 +44,7 @@ bool Sound::IsOpen()
 
 void Sound::Open(string file)
 {
-    chunk = Mix_LoadWAV(file.c_str());
+    chunk = Resources::GetSound(file);
 
     if (!IsOpen())
     {
@@ -48,7 +57,6 @@ Sound::~Sound()
     if (chunk != nullptr)
     {
         Stop();
-        Mix_FreeChunk(chunk);
     }
 }
 

@@ -48,6 +48,8 @@ private:
 
     State *state;
 
+    float time;
+
     string title;
 
     SDL_Window *window;

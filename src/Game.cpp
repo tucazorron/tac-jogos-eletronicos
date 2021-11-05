@@ -4,6 +4,8 @@
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_mixer.h>
 #include "../include/Game.h"
+#include <chrono>
+#include "../include/Resources.h"
 
 using std::cout;
 using std::endl;
@@ -74,6 +76,7 @@ Game::Game(string title, int width, int height)
         };
         Mix_Init(MIX_INIT_MP3);
         Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);
+        int mix_audio_error = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);
         Mix_AllocateChannels(32);
         window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
 
@@ -120,11 +123,23 @@ SDL_Renderer *Game::GetRenderer()
 
 void Game::Run()
 {
+    auto last_time = std::chrono::high_resolution_clock::now();
+    auto current_time = std::chrono::high_resolution_clock::now();
+    state->Update();
     while (!(state->QuitRequested()))
     {
-        state->Update(0);
+        last_time = current_time;
+        current_time = std::chrono::high_resolution_clock::now();
+        auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - last_time).count();
+        state->Update((float) diff);
         state->Render();
         SDL_RenderPresent(renderer);
-        SDL_Delay(33);
+        auto new_time = std::chrono::high_resolution_clock::now();
+        auto diff2 = std::chrono::duration_cast<std::chrono::milliseconds>(new_time - current_time).count();
+        SDL_Delay(30);
+        SDL_Delay(diff2);
     }
+    Resources::ClearImages();
+    Resources::ClearSounds();
+    Resources::ClearMusics();
 }

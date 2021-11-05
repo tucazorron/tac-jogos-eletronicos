@@ -4,11 +4,13 @@
 #include "../include/Sound.h"
 #include "../include/State.h"
 #include "../include/Vec2.h"
+#include "../include/TileSet.h"
+#include "../include/TileMap.h"
 
 using std::cout;
 using std::endl;
 
-State::State()
+State::State() : music("./assets/audio/bensound-dubstep.mp3")
 {
     quitRequested = false;
     LoadAssets();
@@ -20,6 +22,13 @@ State::State()
     GO->box.w = bg->GetWidth();
     GO->box.h = bg->GetHeight();
     GO->AddComponent(bg);
+    objectArray.emplace_back(GO);
+    GO = new GameObject();
+    GO->box.x = 0;
+    GO->box.y = 0;
+    TileSet *tileSet = new TileSet(64, 64, "./assets/img/tileset.png");
+    TileMap *tileMap = new TileMap(*GO, "./assets/map/tileMap.txt", tileSet);
+    GO->AddComponent(tileMap);
     objectArray.emplace_back(GO);
 
     bg = new Sprite(*GO, "assets/img/ocean.jpg");
@@ -103,6 +112,7 @@ void State::Update(float dt)
         if (objectArray[i]->IsDead())
         {
             objectArray.erase(objectArray.begin() + i);
+            i--;
         }
     }
 }

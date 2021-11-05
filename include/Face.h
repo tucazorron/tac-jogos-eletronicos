@@ -3,6 +3,9 @@
 
 #include "Component.h"
 #include "Sound.h"
+#include <chrono>
+
+use namespace std::chrono;
 
 class Face : public Component
 {
@@ -19,6 +22,10 @@ public:
 
 private:
     int hitpoints;
+    bool destroyed = false;
+    float interval;
+    float timer;
+    chrono::steady_clock::time_point first_hit;
 };
 
 #endif

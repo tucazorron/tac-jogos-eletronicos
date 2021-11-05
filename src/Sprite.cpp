@@ -3,6 +3,7 @@
 #include "../include/Game.h"
 #include "../include/GameObject.h"
 #include "../include/Sprite.h"
+#include "../include/Resources.h"
 
 using std::cout;
 using std::endl;
@@ -85,7 +86,10 @@ void Sprite::Render()
     dst.y = associated.box.y;
     dst.w = clipRect.w;
     dst.h = clipRect.h;
-    SDL_RenderCopy(renderer, texture, &clipRect, &dst);
+    if (texture != nullptr)
+    {
+        SDL_RenderCopy(renderer, texture, &clipRect, &dst);
+    }
 }
 
 bool Sprite::IsOpen()

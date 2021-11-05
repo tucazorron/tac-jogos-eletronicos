@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/Music.h"
+#include "../include/Resources.h"
 
 using std::cout;
 using std::endl;
@@ -29,7 +30,7 @@ void Music::Stop(int msToStop)
 
 void Music::Open(string file)
 {
-    music = Mix_LoadMUS(file.c_str());
+    music = Resources::GetMusic(file);
     if (music == nullptr)
     {
         cout << "Music loading error: " << SDL_GetError() << endl;
