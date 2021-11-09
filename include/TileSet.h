@@ -2,24 +2,24 @@
 #define _TILESET_H_
 
 #include <iostream>
-#include "Sprite.hpp"
+#include "Sprite.h"
 
 using std::string;
 
 class TileSet
 {
 public:
-  TileSet(int TileWidth, int TileHeight, string file);
-  void RenderTile(unsigned index, float x, float y);
-  int GetTileWidth();
+  TileSet(int tile_width, int tile_height, string file);
   int GetTileHeight();
+  int GetTileWidth();
+  void RenderTile(unsigned index, float x, float y);
 
 private:
-  Sprite *tileSet;
   int rows;
   int columns;
-  int tileWidth;
-  int tileHeight;
+  int tile_height;
+  int tile_width;
+  Sprite *tile_set;
 };
 
 #endif

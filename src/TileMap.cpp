@@ -4,10 +4,10 @@
 
 using namespace std;
 
-TileMap::TileMap(GameObject &associated, string file, TileSet *tileSet) : Component(associated)
+TileMap::TileMap(GameObject &associated, string file, TileSet *tile_set) : Component(associated)
 {
   Load(file);
-  SetTileSet(tileSet);
+  SetTileSet(tile_set);
 }
 
 void removeSpaceBeginEnd(string &line)
@@ -92,9 +92,9 @@ void TileMap::Load(string file)
       {
         splitToVector1(linha, tokens);
 
-        mapWidth = tokens[0];
-        mapHeight = tokens[1];
-        mapDepth = tokens[2];
+        map_width = tokens[0];
+        map_height = tokens[1];
+        map_depth = tokens[2];
         cout << "vetor\n";
         for (auto t : tokens)
         {
@@ -114,10 +114,10 @@ void TileMap::Load(string file)
           splitToVector(linha, tokens);
           for (auto t : tokens)
           {
-            tileMatrix.push_back(t);
+            tile_matrix.push_back(t);
           }
           cout << "matriz: ";
-          for (auto m : tileMatrix)
+          for (auto m : tile_matrix)
           {
             cout << m << " ";
           }
@@ -130,33 +130,33 @@ void TileMap::Load(string file)
   }
 }
 
-void TileMap::SetTileSet(TileSet *tileSet)
+void TileMap::SetTileSet(TileSet *tile_set)
 {
-  this->tileSet = tileSet;
+  this->tile_set = tile_set;
 }
 
 int &TileMap::At(int x, int y, int z)
 {
-  int area = mapWidth * mapHeight;
+  int area = map_width * map_height;
   int profundidade = z * area;
-  int index = x + (y * mapWidth) + profundidade;
-  return tileMatrix[index];
+  int index = x + (y * map_width) + profundidade;
+  return tile_matrix[index];
 }
 
 void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
 {
-  int width = mapWidth;
-  int height = mapHeight;
+  int width = map_width;
+  int height = map_height;
   //pra cada linha em cada coluna
   for (int i = 0; i < width; i++)
   {
     for (int j = 0; j < height; j++)
     {
-      int tileMatrixindex = At(i, j, layer); //onde i é horizontal, j é vertical, e layer é prfundidae
+      int tile_matrixindex = At(i, j, layer); //onde i é horizontal, j é vertical, e layer é prfundidae
       //renderizar a tile
-      int tilex = i * (tileSet->GetTileWidth());
-      int tiley = j * (tileSet->GetTileHeight());
-      tileSet->RenderTile(tileMatrixindex, tilex, tiley);
+      int tilex = i * (tile_set->GetTileWidth());
+      int tiley = j * (tile_set->GetTileHeight());
+      tile_set->RenderTile(tile_matrixindex, tilex, tiley);
     }
   }
 }
@@ -164,7 +164,7 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
 void TileMap::Render()
 {
   // cout<<"\n renderizando o mapa\n";
-  for (int layer = 0; layer < mapDepth; layer++)
+  for (int layer = 0; layer < map_depth; layer++)
   {
     RenderLayer(layer);
   }
@@ -172,16 +172,16 @@ void TileMap::Render()
 
 int TileMap::GetWidth()
 {
-  return this->mapWidth;
+  return this->map_width;
 }
 
 int TileMap::GetHeight()
 {
-  return this->mapHeight;
+  return this->map_height;
 }
 
 int TileMap::GetDepth()
 {
 
-  return this->mapDepth;
+  return this->map_depth;
 }

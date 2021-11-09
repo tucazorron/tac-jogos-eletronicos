@@ -13,13 +13,9 @@ class Component
 {
 public:
     Component(GameObject &associated);
-
     virtual ~Component();
-
     virtual bool Is(string type);
-
     virtual void Render();
-
     virtual void Update(float dt);
 
 protected:

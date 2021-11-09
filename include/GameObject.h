@@ -17,28 +17,18 @@ class GameObject
 {
 public:
     GameObject();
-
     ~GameObject();
-
     void AddComponent(Component *cpt);
-
     Rect box;
-
     Component *GetComponent(string type);
-
     bool IsDead();
-
     void RemoveComponent(Component *cpt);
-
     void Render();
-
     void RequestDelete();
-
     void Update(float dt);
 
 private:
     vector<std::unique_ptr<Component>> components;
-
     bool isDead;
 };
 

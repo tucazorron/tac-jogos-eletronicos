@@ -1,10 +1,10 @@
+#include <chrono>
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_mixer.h>
 #include "../include/Game.h"
-#include <chrono>
 #include "../include/Resources.h"
 
 using std::cout;
@@ -125,7 +125,7 @@ void Game::Run()
 {
     auto last_time = std::chrono::high_resolution_clock::now();
     auto current_time = std::chrono::high_resolution_clock::now();
-    state->Update();
+    // state->Update();
     while (!(state->QuitRequested()))
     {
         last_time = current_time;

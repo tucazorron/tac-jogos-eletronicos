@@ -1,62 +1,41 @@
-#include "../include/TileSet.h"
 #include <iostream>
+#include "../include/TileSet.h"
 
 using std::cout;
 using std::string;
 
-TileSet::TileSet(int tileWidth, int tileHeight, string file) : tileWidth(tileWidth), tileHeight(tileHeight)
+TileSet::TileSet(int tile_width, int tile_height, string file) : tile_width(tile_width), tile_height(tile_height)
 {
 
   GameObject *go = new GameObject();
 
-  tileSet = new Sprite(*go, file);
-  if (tileSet != nullptr)
-  { //se conseguir abrir o sprite
+  tile_set = new Sprite(*go, file);
+  if (tile_set != nullptr)
+  {
     cout << "abrimos o sprite do tileset\n";
-    columns = ((tileSet->GetWidth()) / tileWidth);
-    rows = ((tileSet->GetHeight()) / tileHeight);
+    columns = ((tile_set->GetWidth()) / tile_width);
+    rows = ((tile_set->GetHeight()) / tile_height);
     cout << "columns: " << columns << "\n rows:" << rows << "\n";
   }
 }
 
-void TileSet::RenderTile(unsigned index, float x, float y)
+void TileSet::RenderTile(unsigned int index, float x, float y)
 {
   int numberTiles = columns * rows;
   if ((index >= 0) && (index < numberTiles))
   {
-    //o SetClip precisa de um x e um y
-    /*the x location of the rectangle's upper left corner
-        the y location of the rectangle's upper left corner */
-
-    //calculo do x: modulo do indice pela quantidade de colunas pois
-    /* |  |  |  | | |
-            eu tenho 5 colunas
-            se minha coluna é 2, o primeiro x é 0, o index 1 é 0+tileswidth e o index 2 é 0+2*tileswidht
-            se meu index é 7, o x deve estar no mesmo lugar que o 2 pois vai ate o final da 5 e volta ao inicio. 7%5 = 2
-        
-        //calculo do y: 
-          |__|__|__|__|
-          |__|__|__|__|
-        descobrir em qual row esta minha posicao
-        se for menor que 5, esta em 0
-        se for de 5 a 10 esta em 1.
-        dividir indice/coluna  
-        multiplicar pela altura da tile       
-            
-        
-         */
-    int leftx = (index % columns) * tileWidth;
-    int lefty = (index / columns) * tileHeight;
-    tileSet->SetClip(leftx, lefty, tileWidth, tileHeight);
-    tileSet->Render(x, y);
+    int leftx = (index % columns) * tile_width;
+    int lefty = (index / columns) * tile_height;
+    tile_set->SetClip(leftx, lefty, tile_width, tile_height);
+    tile_set->Render(x, y);
   }
 }
 
 int TileSet::GetTileHeight()
 {
-  return tileHeight;
+  return tile_height;
 }
 int TileSet::GetTileWidth()
 {
-  return tileWidth;
+  return tile_width;
 }

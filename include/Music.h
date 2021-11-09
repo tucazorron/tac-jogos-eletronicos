@@ -11,18 +11,12 @@ class Music
 {
 public:
     Music();
-
     Music(string file);
-
     ~Music();
-
     bool IsOpen();
-
     void Open(string file);
-
     void Play(int times = -1);
-
-    void Stop(int msToStop = 1500);
+    void Stop(int music_to_stop = 1500);
 
 private:
     Mix_Music *music;

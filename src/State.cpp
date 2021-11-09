@@ -26,8 +26,8 @@ State::State() : music("./assets/audio/bensound-dubstep.mp3")
     GO = new GameObject();
     GO->box.x = 0;
     GO->box.y = 0;
-    TileSet *tileSet = new TileSet(64, 64, "./assets/img/tileset.png");
-    TileMap *tileMap = new TileMap(*GO, "./assets/map/tileMap.txt", tileSet);
+    TileSet *tile_set = new TileSet(64, 64, "./assets/img/tileset.png");
+    TileMap *tileMap = new TileMap(*GO, "./assets/map/tileMap.txt", tile_set);
     GO->AddComponent(tileMap);
     objectArray.emplace_back(GO);
 
@@ -99,7 +99,7 @@ void State::LoadAssets()
 
     objectArray.emplace_back(object);
 
-    music = *new Music("assets/audio/stageState.ogg");
+    music = *new Music("assets/audio/bensound-dubstep.mp3");
 }
 
 void State::Update(float dt)
