@@ -6,6 +6,7 @@
 #include <SDL2/SDL_mixer.h>
 #include "../include/Game.h"
 #include "../include/Resources.h"
+#include "../include/InputManager.h"
 
 using std::cout;
 using std::endl;
@@ -123,23 +124,30 @@ SDL_Renderer *Game::GetRenderer()
 
 void Game::Run()
 {
-    auto last_time = std::chrono::high_resolution_clock::now();
-    auto current_time = std::chrono::high_resolution_clock::now();
-    // state->Update();
+    InputManager &input_manager = InputManager::GetInstance();
     while (!(state->QuitRequested()))
     {
-        last_time = current_time;
-        current_time = std::chrono::high_resolution_clock::now();
-        auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - last_time).count();
-        state->Update((float) diff);
+        instance->CalculateDeltaTime();
+        input_manager.Update();
+        state->Update(instance->dt);
         state->Render();
         SDL_RenderPresent(renderer);
         auto new_time = std::chrono::high_resolution_clock::now();
-        auto diff2 = std::chrono::duration_cast<std::chrono::milliseconds>(new_time - current_time).count();
         SDL_Delay(30);
-        SDL_Delay(diff2);
     }
     Resources::ClearImages();
     Resources::ClearSounds();
     Resources::ClearMusics();
+}
+
+void Game::CalculateDeltaTime()
+{
+    int newframe = starter_frame;
+    starter_frame = SDL_GetTicks();
+    dt = (float)(starter_frame - newframe) / 1000;
+}
+
+float Game::GetDeltaTime()
+{
+    return dt;
 }

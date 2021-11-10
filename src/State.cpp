@@ -6,32 +6,41 @@
 #include "../include/Vec2.h"
 #include "../include/TileSet.h"
 #include "../include/TileMap.h"
+#include "../include/InputManager.h"
+#include "../include/Camera.h"
+#include "../include/CameraFollower.h"
 
 using std::cout;
 using std::endl;
 
-State::State() : music("./assets/audio/bensound-dubstep.mp3")
+State::State() : music("./assets/audio/stageState.ogg")
 {
     quitRequested = false;
-    LoadAssets();
-    music.Play();
+    music.Play(-1);
 
-    GameObject *GO = new GameObject();
-    GO->box.x = 0;
-    GO->box.y = 0;
-    GO->box.w = bg->GetWidth();
-    GO->box.h = bg->GetHeight();
-    GO->AddComponent(bg);
-    objectArray.emplace_back(GO);
-    GO = new GameObject();
-    GO->box.x = 0;
-    GO->box.y = 0;
+    GameObject *go = new GameObject();
+    go->box.x = 0;
+    go->box.y = 0;
+
+    bg = new Sprite(*go, "assets/img/ocean.jpg");
+    go->box.w = bg->GetWidth();
+    go->box.h = bg->GetHeight();
+    go->AddComponent(bg);
+
+    CameraFollower *cf = new CameraFollower(*go);
+    go->AddComponent(cf);
+
+    objectArray.emplace_back(go);
+
+    go = new GameObject();
+    go->box.x = 0;
+    go->box.y = 0;
+
     TileSet *tile_set = new TileSet(64, 64, "./assets/img/tileset.png");
-    TileMap *tileMap = new TileMap(*GO, "./assets/map/tileMap.txt", tile_set);
-    GO->AddComponent(tileMap);
-    objectArray.emplace_back(GO);
+    TileMap *tileMap = new TileMap(*go, "./assets/map/tileMap.txt", tile_set);
+    go->AddComponent(tileMap);
 
-    bg = new Sprite(*GO, "assets/img/ocean.jpg");
+    objectArray.emplace_back(go);
 }
 
 State::~State()
@@ -39,80 +48,40 @@ State::~State()
     objectArray.clear();
 }
 
-void State::Input()
-{
-    SDL_Event event;
-    int mouseX, mouseY;
-
-    SDL_GetMouseState(&mouseX, &mouseY);
-
-    while (SDL_PollEvent(&event))
-    {
-
-        if (event.type == SDL_QUIT)
-        {
-            quitRequested = true;
-        }
-
-        if (event.type == SDL_MOUSEBUTTONDOWN)
-        {
-            for (int i = objectArray.size() - 1; i >= 0; i--)
-            {
-                GameObject *object = (GameObject *)objectArray[i].get();
-
-                if (object->box.Contains((float)mouseX, (float)mouseY))
-                {
-                    Face *face = (Face *)object->GetComponent("Face");
-                    if (face != nullptr)
-                    {
-                        face->Damage(std::rand() % 10 + 10);
-                        break;
-                    }
-                }
-            }
-        }
-        if (event.type == SDL_KEYDOWN)
-        {
-            if (event.key.keysym.sym == SDLK_ESCAPE)
-            {
-                quitRequested = true;
-            }
-            else
-            {
-                Vec2 position = Vec2(200, 0).GetRotated((-PI + PI * (rand() % 1001) / 500.0)) + Vec2(mouseX, mouseY);
-                AddObject((int)position.x, (int)position.y);
-            }
-        }
-    }
-}
-
-void State::LoadAssets()
-{
-    GameObject *object = new GameObject();
-    object->box.x = 0;
-    object->box.y = 0;
-    object->box.w = bg->GetWidth();
-    object->box.h = bg->GetHeight();
-
-    bg = new Sprite(*object, "assets/img/ocean.jpg");
-    object->AddComponent(bg);
-
-    objectArray.emplace_back(object);
-
-    music = *new Music("assets/audio/bensound-dubstep.mp3");
-}
+void State::LoadAssets() {}
 
 void State::Update(float dt)
 {
-    Input();
+    Camera::Update(dt);
+    InputManager &input_manager = InputManager::GetInstance();
 
-    for (unsigned int i = 0; i < objectArray.size(); i++)
+    if (input_manager.IsKeyDown(ESCAPE_KEY) || (input_manager.QuitRequested()))
+    {
+        quitRequested = true;
+    }
+
+    if (input_manager.KeyPress(SDLK_SPACE))
+    {
+        Vec2 objPos = Vec2(200, 0).GetRotated((-PI + PI * (rand() % 1001) / 500.0)) + Vec2(input_manager.GetMouseX(), input_manager.GetMouseY());
+        AddObject((int)objPos.x, (int)objPos.y);
+    }
+
+    unsigned int aux = objectArray.size();
+
+    for (unsigned int i = 0; i < aux; i++)
     {
         objectArray[i]->Update(dt);
+    }
+
+    for (int unsigned i = 0; i < objectArray.size(); i++)
+    {
         if (objectArray[i]->IsDead())
         {
+            cout << "\n array size: ";
+            cout << (objectArray.size()) << "\n";
             objectArray.erase(objectArray.begin() + i);
             i--;
+            cout << i << " is dead \n";
         }
     }
 }
@@ -130,11 +99,11 @@ void State::Render()
     }
 }
 
-void State::AddObject(int mouseX, int mouseY)
+void State::AddObject(int x_mouse, int y_mouse)
 {
     GameObject *object = new GameObject();
-    object->box.x = mouseX;
-    object->box.y = mouseY;
+    object->box.x = x_mouse + Camera::pos.x;
+    object->box.y = y_mouse + Camera::pos.y;
 
     Sprite *penguin = new Sprite(*object, "assets/img/penguinface.png");
     object->AddComponent(penguin);

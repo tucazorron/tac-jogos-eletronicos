@@ -32,6 +32,7 @@ public:
     SDL_Renderer *GetRenderer();
     State &GetState();
     void Run();
+    float GetDeltaTime();
 
 private:
     Game(string mytitle, int mywidth, int myheight);
@@ -42,6 +43,9 @@ private:
     float time;
     string title;
     SDL_Window *window;
+    int starter_frame = 0;
+    float dt = 0.0;
+    void CalculateDeltaTime();
 };
 
 #endif

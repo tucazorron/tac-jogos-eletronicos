@@ -19,6 +19,7 @@ public:
   static SDL_Texture *GetImage(string file);
   static Mix_Music *GetMusic(string file);
   static Mix_Chunk *GetSound(string file);
+  static SDL_Texture *createTexture(string file);
 
 private:
   static unordered_map<string, SDL_Texture *> imageTable;

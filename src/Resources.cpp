@@ -2,6 +2,7 @@
 #include "../include/Game.h"
 
 using std::cout;
+using std::endl;
 using std::string;
 using std::unordered_map;
 
@@ -9,16 +10,14 @@ unordered_map<std::string, SDL_Texture *> Resources::imageTable;
 unordered_map<std::string, Mix_Music *> Resources::musicTable;
 unordered_map<std::string, Mix_Chunk *> Resources::soundTable;
 
-SDL_Texture *createTexture(string file)
+SDL_Texture *Resources::createTexture(string file)
 {
   SDL_Renderer *renderer = Game::GetInstance().GetRenderer();
-  SDL_Texture *texture;
+  SDL_Texture *texture = nullptr;
   texture = IMG_LoadTexture(renderer, file.c_str());
-  SDL_Surface *surface = IMG_Load(file.c_str());
-  texture = SDL_CreateTextureFromSurface(renderer, surface);
   if (texture == nullptr)
   {
-    cout << "erro ao criar";
+    cout << "Erro ao criar textura" << endl;
   }
 
   return texture;
@@ -27,26 +26,23 @@ SDL_Texture *createTexture(string file)
 SDL_Texture *Resources::GetImage(string file)
 {
   if (imageTable.find(file) == imageTable.end())
-  { //se for igual é porque nao existe
+  {
     SDL_Texture *texture = createTexture(file);
 
     if (texture == nullptr)
     {
-      printf("Erro ao criar imagem: %s\n", SDL_GetError());
+      cout << "Erro ao criar imagem: " << SDL_GetError() << endl;
       exit(EXIT_FAILURE);
     }
     else
     {
-      cout << "imagem not null";
-      // getchar();
       imageTable[file] = texture;
     }
-
     return texture;
   }
   else
   {
-    cout << "imagem já existe\n";
+    cout << "Imagem já existe" << endl;
     return imageTable[file];
   }
 }
@@ -54,7 +50,7 @@ SDL_Texture *Resources::GetImage(string file)
 Mix_Chunk *Resources::GetSound(string file)
 {
   if (soundTable.find(file) == soundTable.end())
-  { //se for igual é porque nao existe
+  { 
     Mix_Chunk *chunk = Mix_LoadWAV(file.c_str());
 
     if (chunk == nullptr)
@@ -67,12 +63,10 @@ Mix_Chunk *Resources::GetSound(string file)
       soundTable[file] = chunk;
     }
 
-    // return soundTable[file];
   }
   else
   {
     cout << "som já existe\n";
-    // return soundTable[file];
   }
 
   return soundTable[file];
@@ -81,7 +75,7 @@ Mix_Chunk *Resources::GetSound(string file)
 Mix_Music *Resources::GetMusic(string file)
 {
   if (musicTable.find(file) == musicTable.end())
-  { //se for igual é porque nao existe
+  { 
     Mix_Music *music = Mix_LoadMUS(file.c_str());
 
     if (music == nullptr)

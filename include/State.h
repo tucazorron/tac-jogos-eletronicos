@@ -22,7 +22,6 @@ public:
 
 private:
     void AddObject(int mousex, int mouseY);
-    void Input();
     Sprite *bg;
     Music music;
     vector<unique_ptr<GameObject>> objectArray;

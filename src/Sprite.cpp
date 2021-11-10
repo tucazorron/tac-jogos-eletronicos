@@ -4,6 +4,7 @@
 #include "../include/GameObject.h"
 #include "../include/Sprite.h"
 #include "../include/Resources.h"
+#include "../include/Camera.h"
 
 using std::cout;
 using std::endl;
@@ -13,9 +14,8 @@ Sprite::Sprite(GameObject &associated) : Component(associated)
     texture = nullptr;
 }
 
-Sprite::Sprite(GameObject &associated, string file) : Component(associated)
+Sprite::Sprite(GameObject &associated, string file) : Component(associated), texture(Resources::GetImage(file))
 {
-    texture = nullptr;
     Open(file);
 }
 
@@ -82,8 +82,8 @@ void Sprite::Render()
     SDL_Renderer *renderer = Game::GetInstance().GetRenderer();
 
     SDL_Rect dst;
-    dst.x = associated.box.x;
-    dst.y = associated.box.y;
+    dst.x = associated.box.x - Camera::pos.x;
+    dst.y = associated.box.y - Camera::pos.y;
     dst.w = clipRect.w;
     dst.h = clipRect.h;
     if (texture != nullptr)

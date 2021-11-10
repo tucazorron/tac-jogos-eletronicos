@@ -1,6 +1,7 @@
 #include <fstream>
-#include <sstream> // std::istringstream
+#include <sstream>
 #include "../include/TileMap.h"
+#include "../include/Camera.h"
 
 using namespace std;
 
@@ -13,14 +14,12 @@ TileMap::TileMap(GameObject &associated, string file, TileSet *tile_set) : Compo
 void removeSpaceBeginEnd(string &line)
 {
   string regex = " \n\t\f\v\r";
-  //apaga qualquer coisa antes de uma caractere
   size_t lineposition;
   lineposition = line.find_first_not_of(regex);
   if (lineposition <= line.length())
   {
     line.erase(0, lineposition);
   }
-  //acha a ultima coisa que nao é um espaço e apaga a partir daí
   lineposition = (line.find_last_not_of(regex)) + 1;
   if (lineposition <= line.length())
   {
@@ -29,11 +28,11 @@ void removeSpaceBeginEnd(string &line)
 }
 void splitToVector1(string line, vector<int> &tokens)
 {
-  string regex = " \n\t\f\v\r"; //acha o primeiro que não for espaço
+  string regex = " \n\t\f\v\r";
   size_t lineposition = line.find_first_not_of(regex);
 
   if (lineposition <= line.length())
-  { //se a linha tiver algum caractere
+  {
 
     istringstream auxstring(line);
     string token;
@@ -45,7 +44,6 @@ void splitToVector1(string line, vector<int> &tokens)
       if (token == "\n")
       {
         cout << "ola\n";
-        // getchar();
       }
       auxint = atoi(token.c_str());
       cout << auxint << "\n";
@@ -55,8 +53,6 @@ void splitToVector1(string line, vector<int> &tokens)
 }
 void splitToVector(string line, vector<int> &tokens)
 {
-  // cout<<"entrou\n";
-  // getchar();
 
   istringstream auxstring(line);
   string token;
@@ -66,14 +62,13 @@ void splitToVector(string line, vector<int> &tokens)
   {
     auxint = atoi(token.c_str());
     auxint--;
-    // cout<<auxint<<"\n";
     tokens.push_back(auxint);
   }
 }
 
 void TileMap::Load(string file)
 {
-  ifstream mapfile; //arquivo original, leitura
+  ifstream mapfile; 
   mapfile.open(file);
   int numberline = 1;
   string linha;
@@ -100,7 +95,6 @@ void TileMap::Load(string file)
         {
           cout << t << "\n";
         }
-        // getchar();
       }
       else
       {
@@ -121,7 +115,6 @@ void TileMap::Load(string file)
           {
             cout << m << " ";
           }
-          // getchar();
         }
       }
       numberline++;
@@ -145,28 +138,28 @@ int &TileMap::At(int x, int y, int z)
 
 void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
 {
-  int width = map_width;
-  int height = map_height;
-  //pra cada linha em cada coluna
+  int width = GetWidth();
+  int height = GetHeight();
   for (int i = 0; i < width; i++)
   {
     for (int j = 0; j < height; j++)
     {
-      int tile_matrixindex = At(i, j, layer); //onde i é horizontal, j é vertical, e layer é prfundidae
-      //renderizar a tile
+      int tile_matrix_index = At(i, j, layer); 
       int tilex = i * (tile_set->GetTileWidth());
       int tiley = j * (tile_set->GetTileHeight());
-      tile_set->RenderTile(tile_matrixindex, tilex, tiley);
+      tile_set->RenderTile(tile_matrix_index, ((tilex) - (cameraX * (layer + 1))), (tiley - (cameraY * (layer + 1))));
     }
   }
 }
 
 void TileMap::Render()
 {
-  // cout<<"\n renderizando o mapa\n";
-  for (int layer = 0; layer < map_depth; layer++)
+  int dep = GetDepth();
+  int x = Camera::pos.x;
+  int y = Camera::pos.y;
+  for (int layer = 0; layer < dep; layer++)
   {
-    RenderLayer(layer);
+    RenderLayer(layer, x, y);
   }
 }
 
