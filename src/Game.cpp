@@ -68,12 +68,9 @@ Game::Game(string title, int width, int height)
     }
     else
     {
-        cout << "SDL Successfull!" << endl
-             << "Initializing..." << endl;
-
         if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF))
         {
-            cout << "Error while rendering image." << SDL_GetError() << endl;
+            cout << "Error while rendering image: " << SDL_GetError() << endl;
         };
         Mix_Init(MIX_INIT_MP3);
         Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);
@@ -83,7 +80,6 @@ Game::Game(string title, int width, int height)
 
         if (window != nullptr)
         {
-            cout << "Window created." << endl;
             renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
         }
         else
@@ -93,7 +89,6 @@ Game::Game(string title, int width, int height)
 
         if (renderer != nullptr)
         {
-            cout << "Render created." << endl;
             state = new State();
         }
         else

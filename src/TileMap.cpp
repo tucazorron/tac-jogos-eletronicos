@@ -3,7 +3,8 @@
 #include "../include/TileMap.h"
 #include "../include/Camera.h"
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 TileMap::TileMap(GameObject &associated, string file, TileSet *tile_set) : Component(associated)
 {
@@ -37,16 +38,9 @@ void splitToVector1(string line, vector<int> &tokens)
     istringstream auxstring(line);
     string token;
     int auxint;
-    cout << "Lendo o mapa: \n";
     while (getline(auxstring, token, ','))
     {
-      cout << token << " foi o token\n";
-      if (token == "\n")
-      {
-        cout << "ola\n";
-      }
       auxint = atoi(token.c_str());
-      cout << auxint << "\n";
       tokens.push_back(auxint);
     }
   }
@@ -57,7 +51,6 @@ void splitToVector(string line, vector<int> &tokens)
   istringstream auxstring(line);
   string token;
   int auxint;
-  cout << "Lendo o mapa: \n";
   while (getline(auxstring, token, ','))
   {
     auxint = atoi(token.c_str());
@@ -68,13 +61,13 @@ void splitToVector(string line, vector<int> &tokens)
 
 void TileMap::Load(string file)
 {
-  ifstream mapfile; 
+  ifstream mapfile;
   mapfile.open(file);
   int numberline = 1;
   string linha;
   if (!mapfile.is_open())
   {
-    cout << "Não foi possível abrir o arquivo de mapa \n";
+    cout << "Unable to open map file." << endl;
   }
   else
   {
@@ -144,7 +137,7 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
   {
     for (int j = 0; j < height; j++)
     {
-      int tile_matrix_index = At(i, j, layer); 
+      int tile_matrix_index = At(i, j, layer);
       int tilex = i * (tile_set->GetTileWidth());
       int tiley = j * (tile_set->GetTileHeight());
       tile_set->RenderTile(tile_matrix_index, ((tilex) - (cameraX * (layer + 1))), (tiley - (cameraY * (layer + 1))));

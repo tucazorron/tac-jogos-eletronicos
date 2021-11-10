@@ -77,11 +77,8 @@ void State::Update(float dt)
     {
         if (objectArray[i]->IsDead())
         {
-            cout << "\n array size: ";
-            cout << (objectArray.size()) << "\n";
             objectArray.erase(objectArray.begin() + i);
             i--;
-            cout << i << " is dead \n";
         }
     }
 }

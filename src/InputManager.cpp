@@ -15,13 +15,9 @@ InputManager::InputManager()
   }
 
   updateCounter = 0;
-
-  cout << "input manager criado\n";
 }
 
-InputManager::~InputManager()
-{
-}
+InputManager::~InputManager() {}
 
 InputManager &InputManager::GetInstance()
 {
@@ -63,7 +59,7 @@ void InputManager::Update()
     case SDL_KEYDOWN:
     {
       if (event.key.repeat != 1)
-      { 
+      {
         SDL_Keycode keyd = event.key.keysym.sym;
         keyState[keyd] = true;
         keyUpdate[keyd] = updateCounter;

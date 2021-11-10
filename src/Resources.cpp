@@ -17,7 +17,7 @@ SDL_Texture *Resources::createTexture(string file)
   texture = IMG_LoadTexture(renderer, file.c_str());
   if (texture == nullptr)
   {
-    cout << "Erro ao criar textura" << endl;
+    cout << "Error while creating texture: " << SDL_GetError() << endl;
   }
 
   return texture;
@@ -31,7 +31,7 @@ SDL_Texture *Resources::GetImage(string file)
 
     if (texture == nullptr)
     {
-      cout << "Erro ao criar imagem: " << SDL_GetError() << endl;
+      cout << "Error while creating image: " << SDL_GetError() << endl;
       exit(EXIT_FAILURE);
     }
     else
@@ -42,7 +42,6 @@ SDL_Texture *Resources::GetImage(string file)
   }
   else
   {
-    cout << "Imagem já existe" << endl;
     return imageTable[file];
   }
 }
@@ -50,49 +49,41 @@ SDL_Texture *Resources::GetImage(string file)
 Mix_Chunk *Resources::GetSound(string file)
 {
   if (soundTable.find(file) == soundTable.end())
-  { 
+  {
     Mix_Chunk *chunk = Mix_LoadWAV(file.c_str());
 
     if (chunk == nullptr)
     {
-      printf("Erro ao criar som: %s\n", SDL_GetError());
+      cout << "Erro ao criar som: " << SDL_GetError() << endl;
       exit(EXIT_FAILURE);
     }
     else
     {
       soundTable[file] = chunk;
     }
-
   }
-  else
-  {
-    cout << "som já existe\n";
-  }
-
   return soundTable[file];
 }
 
 Mix_Music *Resources::GetMusic(string file)
 {
   if (musicTable.find(file) == musicTable.end())
-  { 
+  {
     Mix_Music *music = Mix_LoadMUS(file.c_str());
 
     if (music == nullptr)
     {
-      printf("Erro ao criar musica: %s\n", SDL_GetError());
+      cout << "Erro while creating music: " << SDL_GetError() << endl;
       exit(EXIT_FAILURE);
     }
     else
     {
       musicTable[file] = music;
     }
-
     return musicTable[file];
   }
   else
   {
-    cout << "musica já existe\n";
     return musicTable[file];
   }
 }

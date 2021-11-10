@@ -104,7 +104,7 @@ void Sprite::Render(float a, float b)
     {
         if (SDL_RenderCopy(renderer, texture, &clipRect, &dst) != 0)
         {
-            printf("Erro no render copy: %s\n", SDL_GetError());
+            cout << "Error while rendering copy: " << SDL_GetError() << endl;
         }
     }
 }
